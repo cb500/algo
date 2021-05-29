@@ -37,8 +37,12 @@ CB_RETURN cb_list_destroy(CB_NODE *list);
 // Queue
 CB_RETURN cb_queue_create(CB_QUEUE **queue);
 void cb_queue_destroy(CB_QUEUE *queue);
-CB_RETURN cb_init_queue (void **);
+
 CB_RETURN cb_queue_enqueue(CB_QUEUE *queue, CB_NODE *node);
 CB_RETURN cb_queue_enqueue2(void **queue, char *value);
+CB_NODE *cb_queue_dequeue(CB_QUEUE *queue);
+CB_NODE *cb_queue_front(CB_QUEUE *queue);
+CB_NODE *cb_queue_rear(CB_QUEUE *queue);
+size_t cb_queue_count(CB_QUEUE *queue);
 
 #endif // __CB_UTILS

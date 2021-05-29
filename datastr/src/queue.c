@@ -4,18 +4,6 @@
  * Date: 2021-05-28
  **/
 
-/**
- * Functions:
- *  - enqueue
- *  - dequeue
- *  - queueFront
- *  - queueRear
- *  - queueCount
- *  - emptyQueue
- *  - fullQueue
- *
- **/
-
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
@@ -69,7 +57,6 @@ CB_RETURN cb_queue_enqueue(CB_QUEUE *queue, CB_NODE *node)
     return CB_OK;
 }
 
-// CB_RETURN (*cb_add_node)(void **node, char *value)
 CB_RETURN cb_queue_enqueue2(void **queue, char *value)
 {
     CB_QUEUE *nq;
@@ -93,4 +80,44 @@ CB_RETURN cb_queue_enqueue2(void **queue, char *value)
         return ret;
 
     return CB_OK;
+}
+
+CB_NODE *cb_queue_dequeue(CB_QUEUE *queue)
+{
+    CB_NODE *node;
+    if(queue == (CB_QUEUE *)NULL)
+        return NULL;
+
+    if(queue->front == (CB_NODE *)NULL)
+        return NULL;
+
+    node = queue->front;
+    queue->front = queue->front->next;
+    queue->count--;
+
+    return node;
+}
+
+CB_NODE *cb_queue_front(CB_QUEUE *queue)
+{
+    if(queue == (CB_QUEUE *)NULL)
+        return NULL;
+
+    return queue->front;
+}
+
+CB_NODE *cb_queue_rear(CB_QUEUE *queue)
+{
+    if(queue == (CB_QUEUE *)NULL)
+        return NULL;
+
+    return queue->rear;
+}
+
+size_t cb_queue_count(CB_QUEUE *queue)
+{
+    if(queue == (CB_QUEUE *)NULL)
+            return CB_ERR_NULL;
+
+    return queue->count;
 }
