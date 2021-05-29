@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "utils.h"
+#include "cb_utils.h"
 
 #define DEFAULT_FILE "../tests/sample.txt"
 
@@ -27,7 +27,7 @@ int main(int args, char *vargs[])
 
     //
     CB_NODE *list = NULL;
-    ret = cb_read_file_line(&cb_stack_push, file, (void **)&list, 0);
+    ret = cb_read_file_line(&cb_stack_push, &cb_init_void, file, (void **)&list, 0);
     printf("\n DONE with %d words read!! \n", ret);
 
     printf("-- OLD LIST ---------------------------------------------\n");
@@ -52,6 +52,15 @@ int main(int args, char *vargs[])
 
     // Cleanup
     cb_node_destroy(list);
+    fseek(file, 0, SEEK_SET);
 
+
+    ////// Queue
+    CB_QUEUE *queue = NULL;
+    cb_queue_create(&queue);
+    ret = cb_read_file_line(&cb_queue_enqueue2, &cb_init_void, file, (void **)&queue, 0);
+    printf("Queue size: %d\nFirst element: %s\nLast Element: %s\n", queue->count, queue->front->value, queue->rear->value);
+
+    fclose(file);
     return 0;
 }

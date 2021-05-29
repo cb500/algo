@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "utils.h"
+#include "cb_utils.h"
 
 int cb_sort(int (*cb_sor_algo)(void *list_old, void **list_new), void *list_old, void **list_new)
 {

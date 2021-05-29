@@ -6,14 +6,14 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "utils.h"
+#include "cb_utils.h"
 
 CB_RETURN cb_node_initialize(void **newNode)
 {
     CB_NODE *tmp;
     tmp = (CB_NODE *) malloc(sizeof(CB_NODE));
     if(tmp == (CB_NODE *)NULL)
-        return ERROR_MEM_INIT;
+        return CB_ERR_MEM_INIT;
 
     memset(tmp, 0, sizeof(tmp));
     tmp->next = NULL;
@@ -21,7 +21,7 @@ CB_RETURN cb_node_initialize(void **newNode)
 
     *newNode = tmp;
 
-    return OK;
+    return CB_OK;
 }
 
 void cb_node_destroy(void *node)
@@ -34,6 +34,7 @@ void cb_node_destroy(void *node)
     if(((CB_NODE *)node)->value != (char *)NULL)
         free(((CB_NODE *)node)->value);
     free(node);
+    node = NULL;
 }
 
 void cb_switch_node(void (*cb_switch_algo)(void **root, void *prev, void *nd1, void *nd2), 
@@ -80,4 +81,14 @@ void cb_print_node(void *node)
 {
     if(node != (CB_NODE *)NULL)
         printf("Node [%d]: %s\n", ((CB_NODE *)node)->id, ((CB_NODE *)node)->value);
+}
+
+CB_RETURN cb_node_add_value(CB_NODE *node, char *value)
+{
+    node->value = (char *)malloc(strlen(value));
+    if(node->value == NULL)
+        return CB_ERR_MEM_INIT;
+
+    strcpy(node->value, value);
+    return CB_OK;
 }

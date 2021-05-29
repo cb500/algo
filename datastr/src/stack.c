@@ -7,31 +7,34 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "utils.h"
+#include "cb_utils.h"
+
+CB_RETURN cb_init_stack (void **stack)
+{ 
+    return CB_OK;
+}
 
 CB_RETURN cb_stack_push(void **stack, char *value)
 {
-    CB_RETURN ret = OK;
-    CB_NODE *new;
-    if(ret = cb_node_initialize((void **)&new))
+    CB_RETURN ret = CB_OK;
+    CB_NODE *node;
+    if(ret = cb_node_initialize((void **)&node))
         return ret;
 
-    new->value = (char *)malloc(strlen(value));
-    if(new->value == NULL)
+    if(ret = cb_node_add_value(node, value))
     {
-        cb_node_destroy(new);
-        return ERROR_MEM_INIT;
+        cb_node_destroy(node);
+        return CB_ERR_MEM_INIT;
     }
 
-    strcpy(new->value, value);
     if(*stack != (CB_NODE *)NULL)
     {
-        new->id = ((CB_NODE *)(*stack))->id + 1;
-        new->origPosition = ((CB_NODE *)(*stack))->origPosition + 1;
-        new->prev = *stack;
+        node->id = ((CB_NODE *)(*stack))->id + 1;
+        node->origPosition = ((CB_NODE *)(*stack))->origPosition + 1;
+        node->prev = *stack;
     }
 
-    *stack = new;
+    *stack = node;
 
     return ret;
 }

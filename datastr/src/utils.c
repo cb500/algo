@@ -5,10 +5,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "utils.h"
+#include "cb_utils.h"
 
 #define BUFFER_SIZE 512
 #define WORD_MIN_SIZE 4
+
+CB_RETURN cb_init_void (void **value)
+{
+    return CB_OK; 
+}
+
 /**
  * Read all the lines of a file, split them into words and return the number of words
  */
@@ -32,12 +38,17 @@ static void cb_sanitize_word(char *word, int pos)
     }
 }
 
-CB_RETURN cb_read_file_line(CB_RETURN (*cb_add_node)(void **node, char *value), FILE *file, void **list, u_int8_t sanitize)
+CB_RETURN cb_read_file_line(CB_RETURN (*cb_add_node)(void **node, char *value),
+        CB_RETURN (*cb_init_struct)(void **cb_struct), FILE *file, void **list, u_int8_t sanitize)
 {
     if(file == NULL)
-        return ERROR_NULL;
+        return CB_ERR_NULL;
 
-    CB_RETURN ret_val = OK;
+    CB_RETURN retval = CB_OK;
+    if((retval = cb_init_struct(list)) != CB_OK)
+        return retval;
+
+
     char buffer[BUFFER_SIZE];
 
     CB_NODE *tmpList = NULL;
@@ -63,7 +74,7 @@ CB_RETURN cb_read_file_line(CB_RETURN (*cb_add_node)(void **node, char *value), 
     }
 
     // The ret_val variable contains the number of items in the list
-    return ret_val;
+    return retval;
 }
 
 void cb_print(void (* cb_print)(void *), void *root)

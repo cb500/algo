@@ -6,12 +6,12 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "utils.h"
+#include "cb_utils.h"
 
 CB_RETURN cb_list_add_node(void **stack, char *value)
 {
     // Create and initialize a new node
-    CB_RETURN ret = OK;
+    CB_RETURN ret = CB_OK;
     CB_NODE *node;
     if(ret = cb_node_initialize((void **)&node))
         return ret;
@@ -20,7 +20,7 @@ CB_RETURN cb_list_add_node(void **stack, char *value)
     if(node->value == NULL)
     {
         cb_node_destroy(node);
-        return ERROR_MEM_INIT;
+        return CB_ERR_MEM_INIT;
     }
 
     // Populate the node with the acquired values
@@ -36,4 +36,16 @@ CB_RETURN cb_list_add_node(void **stack, char *value)
 
     return ret;
 
+}
+
+CB_RETURN cb_list_destroy(CB_NODE *list)
+{
+    CB_NODE *node;
+    while((node = list) != (CB_NODE *)NULL)
+    {
+        list = list->next;
+        cb_node_destroy(node);
+    }
+
+    return CB_OK;
 }
