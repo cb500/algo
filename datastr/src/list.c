@@ -13,7 +13,7 @@ CB_RETURN cb_list_add_node(void **stack, char *value)
     // Create and initialize a new node
     CB_RETURN ret = CB_OK;
     CB_NODE *node;
-    if(ret = cb_node_initialize((void **)&node))
+    if((ret = cb_node_initialize((void **)&node)))
         return ret;
 
     node->value = (char *)malloc(strlen(value));

@@ -121,3 +121,12 @@ size_t cb_queue_count(CB_QUEUE *queue)
 
     return queue->count;
 }
+
+void *queue_peek(const CB_QUEUE *queue)
+{
+    if(queue == (CB_QUEUE *)NULL ||
+        queue->front == (CB_NODE *)NULL)
+        return NULL;
+
+    return queue->front->value;
+}

@@ -44,5 +44,6 @@ CB_NODE *cb_queue_dequeue(CB_QUEUE *queue);
 CB_NODE *cb_queue_front(CB_QUEUE *queue);
 CB_NODE *cb_queue_rear(CB_QUEUE *queue);
 size_t cb_queue_count(CB_QUEUE *queue);
+void *queue_peek(const CB_QUEUE *queue);
 
 #endif // __CB_UTILS

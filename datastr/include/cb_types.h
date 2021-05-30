@@ -5,7 +5,7 @@
  **/
 
 #ifndef __CB_TYPES_H
-#define __CB_NODE_H
+#define __CB_TYPES_H
 
 typedef enum {
     CB_OK            = 0,
@@ -16,4 +16,4 @@ typedef enum {
 
 
 
-#endif // __CB_NODE_H
+#endif // __CB_TYPES_H
