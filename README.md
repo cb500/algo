@@ -31,9 +31,9 @@ Thes books used here as references, ideas and help to understand the concepts ar
  - The Algorithm Design Manual by Steve S. Skiena [6]
  - Wikipedia
 
-[1] https://en.wikipedia.org/wiki/Data_structure
-[2] https://www.oreilly.com/library/view/mastering-algorithms-with/1565924533/
-[3] https://www.amazon.com/Data-Structures-Pseudocode-Approach-C/dp/0534390803
-[4] https://www.amazon.com/Algorithms-4th-Robert-Sedgewick/dp/032157351X
-[5] https://algs4.cs.princeton.edu/home/
+[1] https://en.wikipedia.org/wiki/Data_structure <br>
+[2] https://www.oreilly.com/library/view/mastering-algorithms-with/1565924533/<br>
+[3] https://www.amazon.com/Data-Structures-Pseudocode-Approach-C/dp/0534390803<br>
+[4] https://www.amazon.com/Algorithms-4th-Robert-Sedgewick/dp/032157351X<br>
+[5] https://algs4.cs.princeton.edu/home/<br>
 [6] https://www.springer.com/gp/book/9781848000698
