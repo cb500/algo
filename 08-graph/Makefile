@@ -14,10 +14,10 @@ CFLAGS = -g -Wall -I$(INCDIR)
 LIBS   =
 
 # Binary name
-BIN  = datastr-bin
+BIN  = graph
 
 # Source files and object files
-SRCS = utils.c node.c sort.c stack.c queue.c list.c main.c
+SRCS = 
 OBJS = $(addprefix $(BUILD_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 
 .PHONY: all clean

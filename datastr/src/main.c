@@ -59,7 +59,7 @@ int main(int args, char *vargs[])
     CB_QUEUE *queue = NULL;
     cb_queue_create(&queue);
     ret = cb_read_file_line(&cb_queue_enqueue2, &cb_init_void, file, (void **)&queue, 0);
-    printf("Queue size: %d\nFirst element: %s\nLast Element: %s\n", queue->count, (char *)queue->front->value, (char *)queue->rear->value);
+    printf("Queue size: %ld\nFirst element: %s\nLast Element: %s\n", queue->count, (char *)queue->front->value, (char *)queue->rear->value);
 
     fclose(file);
     return 0;
