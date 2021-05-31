@@ -6,7 +6,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "cb_utils.h"
+#include "cb_node.h"
 
 CB_RETURN cb_node_initialize(void **newNode)
 {
@@ -15,7 +15,7 @@ CB_RETURN cb_node_initialize(void **newNode)
     if(tmp == (CB_NODE *)NULL)
         return CB_ERR_MEM_INIT;
 
-    memset(tmp, 0, sizeof(tmp));
+    memset(tmp, 0, sizeof(CB_NODE));
     tmp->next = NULL;
     tmp->prev = NULL;
 
@@ -80,7 +80,7 @@ void cb_switch_node_next(void **root, void *prev, void *nd1, void *nd2)
 void cb_print_node(void *node)
 {
     if(node != (CB_NODE *)NULL)
-        printf("Node [%d]: %s\n", ((CB_NODE *)node)->id, ((CB_NODE *)node)->value);
+        printf("Node [%d]: %s\n", ((CB_NODE *)node)->id, (char *)((CB_NODE *)node)->value);
 }
 
 CB_RETURN cb_node_add_value(CB_NODE *node, char *value)
