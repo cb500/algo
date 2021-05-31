@@ -44,19 +44,23 @@ void cb_node_destroy(CB_NODE **node)
 }
 
 // Data manipulation functions
-CB_RETURN cb_node_add_data(CB_NODE *node, void *data, CB_RETURN (*cb_node_add_dta_callback)(CB_NODE *_node, void *_data))
+CB_RETURN cb_node_add_data(CB_NODE *node, const void *data, CB_RETURN (*cb_node_add_dta_callback)(CB_NODE *_node, const void *_data))
 {
     return cb_node_add_dta_callback(node, data);
 }
 
 
-CB_RETURN cb_node_add_data_char(CB_NODE *node, void *value)
+CB_RETURN cb_node_add_data_char(CB_NODE *node, const void *value)
 {
-    node->data = (char *)malloc(strlen((char *)value));
+    if(node == (CB_NODE *) NULL)
+        return CB_ERR_NULL;
+
+    const char *tmp = (char *)value;
+    node->data = (char *)malloc(strlen(tmp) + 1);
     if(node->data == NULL)
         return CB_ERR_MEM_INIT;
 
-    strcpy(node->data, (char *)value);
+    strcpy(node->data, tmp);
     return CB_OK;
 }
 

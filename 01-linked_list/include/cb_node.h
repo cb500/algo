@@ -27,8 +27,8 @@ CB_RETURN cb_node_initialize(CB_NODE **node);
 void cb_node_destroy(CB_NODE **node);
 
 // Node data manipulation
-CB_RETURN cb_node_add_data(CB_NODE *node, void *data, CB_RETURN (*cb_node_add_dta_callback)(CB_NODE *_node, void *_data));
-CB_RETURN cb_node_add_data_char(CB_NODE *node, void *value);
+CB_RETURN cb_node_add_data(CB_NODE *node, const void *data, CB_RETURN (*cb_node_add_dta_callback)(CB_NODE *_node, const void *_data));
+CB_RETURN cb_node_add_data_char(CB_NODE *node, const void *value);
 void *cb_node_get_data(CB_NODE *node);
 
 // Node data print

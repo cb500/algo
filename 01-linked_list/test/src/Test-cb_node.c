@@ -6,6 +6,7 @@
 
 #include <check.h>
 #include <stdlib.h>
+#include "Test-linked_list.h"
 #include "cb_node.h"
 
 START_TEST(test_cb_node_lifetime)
@@ -61,7 +62,7 @@ START_TEST(test_cb_node_data)
     cb_node_destroy(&node2);
 } END_TEST
 
-Suite *money_suite(void) 
+Suite *cb_node_suite(void)
 {
     Suite *s;
     TCase *tc_core;
@@ -75,19 +76,4 @@ Suite *money_suite(void)
     suite_add_tcase(s, tc_core);
 
     return s;
-}
-
-int main(void) 
-{
-    int no_failed = 0;
-    Suite *s;
-    SRunner *runner;
-
-    s = money_suite();
-    runner = srunner_create(s);
-
-    srunner_run_all(runner, CK_NORMAL);
-    no_failed = srunner_ntests_failed(runner);
-    srunner_free(runner);
-    return (no_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

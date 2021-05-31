@@ -1,4 +1,5 @@
 .vscode
+valgrind.txt
 bin
 objs
 build

@@ -14,18 +14,18 @@ CVG_FILE = coverage_report.html
 SRC_DIR	  	= src
 INC_DIR   	= ./include
 INC_PRJ_DIR = ../include
-TST_DIR	  	= test
+INC_TST_DIR = ./test/include
+TST_DIR	  	= test/src
 BUILD_DIR 	= build
 LD_LIBRARY_PATH :=`pwd`/$(BUILD_DIR):$(LD_LIBRARY_PATH)
 
 # CC flags and libs
 CFLAGS 		  = -fPIC -Wall -Wextra -g -O0 -I$(INC_DIR) -I$(INC_PRJ_DIR)
 LDFLAGS 	  = -shared
-PROFILE_FLAGS = -fprofile-arcs -ftest-coverage
+PROFILE_FLAGS = -fprofile-arcs -ftest-coverage -I$(INC_TST_DIR)
 TST_LIBS 	  = -lcheck -lm -lpthread -lrt
 COV_LIBS 	  = -lgcov -coverage
-SHARED_LIB 	  = -L./$(BUILD_DIR) -llinked_list
-LIBS   =
+LIBS   		  =
 
 # GCONV
 GCOV = gcovr
@@ -35,11 +35,12 @@ GCONV_FLAGS = -r . --html --html-details
 SRC_FILES  = $(shell find $(SRC_DIR) -name '*.c')
 TST_FILES  = $(shell find $(TST_DIR) -name '*.c')
 POBJ_FILES = $(addprefix $(BUILD_DIR)/,$(patsubst %.c,%.o,$(notdir $(SRC_FILES))))
+LOBJ_FILES = $(addprefix $(BUILD_DIR)/,$(filter-out main.o, $(patsubst %.c,%.o,$(notdir $(SRC_FILES)))))
 TOBJ_FILES = $(addprefix $(BUILD_DIR)/,$(patsubst %.c,%.o,$(notdir $(TST_FILES))))
 
 SILENT:=@
 
-.PHONY: build all test clean
+.PHONY: build all test lib clean
 
 build: directories $(BIN)
 	@echo "Done, enjoy your binary files :D"
@@ -62,22 +63,23 @@ $(BIN): $(POBJ_FILES)
 	@echo "Linking the object files ($^) to build '$@' executable file"
 	$(SILENT) $(CC) -o $(BUILD_DIR)/$@ $^ $(CFLAGS) $(LIBS)
 
-$(BIN_LIB): $(POBJ_FILES)
+lib: directories $(BIN_LIB)
+
+$(BIN_LIB): $(LOBJ_FILES)
 	@echo "Linking the object files ($^) to build '$@' library file"
 	$(SILENT) $(CC) -o $(BUILD_DIR)/$@ $^ $(CFLAGS) $(LDFLAGS) $(LIBS)
 
-$(BIN_TEST): $(TOBJ_FILES)
+$(BIN_TEST): $(LOBJ_FILES) $(TOBJ_FILES)
 	@echo "Building the test binary ($@) out of $^"
-	@echo "LD_LIBRARY_PATH = $(LD_LIBRARY_PATH)"
-	$(SILENT) $(CC) -o $(BUILD_DIR)/$@ $^ $(TST_LIBS) $(COV_LIBS) $(SHARED_LIB)
+	$(SILENT) $(CC) -o $(BUILD_DIR)/$@ $^ $(TST_LIBS) $(COV_LIBS)
 
-test: $(BIN_LIB) $(BIN_TEST)
-	@echo "----------------------------------------------------"
-	@echo "--- TESTS BEGIN ------------------------------------"
+test: directories $(BIN_TEST)
 	@echo ""
-	$(SILENT) LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) $(BUILD_DIR)/$(BIN_TEST)
+	@echo "--- TESTS BEGIN ------------------------------------"
+	$(BUILD_DIR)/$(BIN_TEST)
 	@echo ""
 	@echo "---- TESTS END --------------------------------------"
+	@echo ""
 
 $(CVG_FILE): test
 	@echo "Building coverage file $(BUILD_DIR)/$(CVG_FILE)"
