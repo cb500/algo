@@ -3,6 +3,7 @@
 # Binaries
 CC    = gcc
 MKDIR = mkdir -p
+VALGRIND = valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all
 
 # Binary name
 BIN  	 = linked_list
@@ -17,7 +18,7 @@ INC_PRJ_DIR = ../include
 INC_TST_DIR = ./test/include
 TST_DIR	  	= test/src
 BUILD_DIR 	= build
-LD_LIBRARY_PATH :=`pwd`/$(BUILD_DIR):$(LD_LIBRARY_PATH)
+#LD_LIBRARY_PATH :=`pwd`/$(BUILD_DIR):$(LD_LIBRARY_PATH)
 
 # CC flags and libs
 CFLAGS 		  = -fPIC -Wall -Wextra -g -O0 -I$(INC_DIR) -I$(INC_PRJ_DIR)
@@ -40,12 +41,12 @@ TOBJ_FILES = $(addprefix $(BUILD_DIR)/,$(patsubst %.c,%.o,$(notdir $(TST_FILES))
 
 SILENT:=@
 
-.PHONY: build all test lib clean
+.PHONY: build all test lib coverage valgrind clean
 
 build: directories $(BIN)
 	@echo "Done, enjoy your binary files :D"
 
-all: directories $(BIN) $(CVG_FILE)
+all: build lib coverage
 
 directories:
 	@echo "Creating directories $(BUILD_DIR)"
@@ -80,6 +81,23 @@ test: directories $(BIN_TEST)
 	@echo ""
 	@echo "---- TESTS END --------------------------------------"
 	@echo ""
+
+valgrind:
+	RET=0
+	@echo "Checking binaries to run valgrind..."
+ifneq ("$(wildcard $(BUILD_DIR)/$(BIN))","")
+	@echo "Running valgrind against $(BUILD_DIR)/$(BIN)"
+	$(SILENT) RET=`$(VALGRIND) --log-file=$(BUILD_DIR)/valgrind-$(BIN).txt $(BUILD_DIR)/$(BIN)`
+	@echo "Done with valgrind! You can find the restult at $(BUILD_DIR)/valgrind-$(BIN).txt"
+endif
+
+ifneq ("$(wildcard $(BUILD_DIR)/$(BIN_TEST))","")
+	@echo "Running valgrind against $(BUILD_DIR)/$(BIN_TEST)"
+	$(SILENT) RET=`$(VALGRIND) --log-file=$(BUILD_DIR)/valgrind-$(BIN_TEST).txt $(BUILD_DIR)/$(BIN_TEST)`
+	@echo "Done with valgrind! You can find the restult at $(BUILD_DIR)/valgrind-$(BIN_TEST).txt"
+endif
+
+coverage: $(CVG_FILE)
 
 $(CVG_FILE): test
 	@echo "Building coverage file $(BUILD_DIR)/$(CVG_FILE)"
