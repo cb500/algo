@@ -35,34 +35,50 @@ void cb_node_destroy(CB_NODE **node)
     tmp = *node;
     tmp->next = NULL;
     tmp->prev = NULL;
-    if(tmp->value != (char *)NULL)
-        free(tmp->value);
+    if(tmp->data != (char *)NULL)
+        free(tmp->data);
 
     free(tmp);
     tmp = NULL;
     *node = tmp;
 }
 
-void cb_print_node(CB_NODE *node)
+// Data manipulation functions
+CB_RETURN cb_node_add_data(CB_NODE *node, void *data, CB_RETURN (*cb_node_add_dta_callback)(CB_NODE *_node, void *_data))
 {
-    if(node != (CB_NODE *)NULL)
-        printf("Node [%d]: %s\n", ((CB_NODE *)node)->id, (char *)((CB_NODE *)node)->value);
+    return cb_node_add_dta_callback(node, data);
 }
 
-CB_RETURN cb_node_add_data(CB_NODE *node, char *value)
+
+CB_RETURN cb_node_add_data_char(CB_NODE *node, void *value)
 {
-    node->value = (char *)malloc(strlen(value));
-    if(node->value == NULL)
+    node->data = (char *)malloc(strlen((char *)value));
+    if(node->data == NULL)
         return CB_ERR_MEM_INIT;
 
-    strcpy(node->value, value);
+    strcpy(node->data, (char *)value);
     return CB_OK;
 }
 
-void *cb_node_get_data(CB_NODE *node, void *(*cb_get_data)(CB_NODE *node))
+void *cb_node_get_data(CB_NODE *node)
 {
-    return cb_get_data(node);
+    if(node == (CB_NODE *)NULL)
+        return NULL;
+    return node->data;
 }
+
+// Printing functions
+void cb_node_print(CB_NODE *node, void (*cb_print_nde)(CB_NODE *_node))
+{
+    cb_print_nde(node);
+}
+
+void cb_node_print_char(CB_NODE *node)
+{
+    if(node != (CB_NODE *)NULL)
+        printf("Node [%d]: %s\n", ((CB_NODE *)node)->id, (char *)((CB_NODE *)node)->data);
+}
+
 
 void cb_switch_node(void (*cb_switch_algo)(void **root, void *prev, void *nd1, void *nd2),
     void **root,

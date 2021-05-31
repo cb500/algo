@@ -8,15 +8,7 @@
 #include <stdlib.h>
 #include "cb_node.h"
 
-/*
-CB_RETURN cb_node_initialize(void **new_node);
-void cb_node_destroy(void *node);
-void cb_print_node(void *node);
-CB_RETURN cb_node_add_data(CB_NODE *node, char *value);
-void *cb_node_get_data(CB_NODE *node, void *(*cb_get_data)(CB_NODE *node));
-*/
-
-START_TEST(test_cb_node_lifetime) 
+START_TEST(test_cb_node_lifetime)
 {
     CB_NODE *node;
     int ret;
@@ -38,6 +30,37 @@ START_TEST(test_cb_node_lifetime)
 } END_TEST
 
 
+START_TEST(test_cb_node_data) 
+{
+    CB_NODE *node1, *node2;
+    int ret;
+    char data[] = "Just data";
+
+    // Initialize the node
+    cb_node_initialize(&node1);
+    cb_node_initialize(&node2);
+
+    // Check the add_char funtion
+    ret = cb_node_add_data_char(node1, (void *)data);
+    ck_assert_int_eq(ret, CB_OK);
+    ck_assert_str_eq(node1->data, "Just data");
+
+    // Check the generic add_data function using the add_char function as callback
+    ret = cb_node_add_data(node2, (void *) data, &cb_node_add_data_char);
+    ck_assert_int_eq(ret, CB_OK);
+    ck_assert_str_eq(node2->data, "Just data");
+
+    // Compare the two nodes and they shall have the same data
+    ck_assert_str_eq(node1->data, node2->data);
+
+    // Check the generic get_data function that just returns the void value
+    ck_assert_str_eq(cb_node_get_data(node1), "Just data");
+
+    // Cleanup
+    cb_node_destroy(&node1);
+    cb_node_destroy(&node2);
+} END_TEST
+
 Suite *money_suite(void) 
 {
     Suite *s;
@@ -47,6 +70,8 @@ Suite *money_suite(void)
     tc_core = tcase_create("Core");
 
     tcase_add_test(tc_core, test_cb_node_lifetime);
+    tcase_add_test(tc_core, test_cb_node_data);
+
     suite_add_tcase(s, tc_core);
 
     return s;

@@ -15,7 +15,7 @@ struct _CB_NODE
 {
     u_int32_t id;
     u_int32_t origPosition;
-    void *value;
+    void *data;
     struct _CB_NODE *prev;
     struct _CB_NODE *next;
 };
