@@ -39,29 +39,36 @@ TOBJ_FILES = $(addprefix $(BUILD_DIR)/,$(patsubst %.c,%.o,$(notdir $(TST_FILES))
 
 SILENT:=@
 
-.PHONY: all clean
+.PHONY: build all test clean
 
-# all: directories $(BIN)
-all: $(CVG_FILE)
+build: directories $(BIN)
+	@echo "Done, enjoy your binary files :D"
+
+all: directories $(BIN) $(CVG_FILE)
 
 directories:
-	@echo "Creating directories"
-	$(SILENT) ${MKDIR} $(BUILD_DIR) $(BUILD_TST_DIR)
+	@echo "Creating directories $(BUILD_DIR)"
+	$(SILENT) $(MKDIR) $(BUILD_DIR)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	@echo "Compiling project files"
+	@echo "Compiling project file '$<' to create '$@'"
 	$(SILENT) $(CC) -c -o $@ $< $(CFLAGS)
 
 $(BUILD_DIR)/%.o: $(TST_DIR)/%.c
-	@echo "Compiling test files"
+	@echo "Compiling test file '$<' to create '$@'"
 	$(SILENT) $(CC) -c -o $@ $< $(CFLAGS) $(PROFILE_FLAGS)
 
+$(BIN): $(POBJ_FILES)
+	@echo "Linking the object files ($^) to build '$@' executable file"
+	$(SILENT) $(CC) -o $(BUILD_DIR)/$@ $^ $(CFLAGS) $(LIBS)
+
 $(BIN_LIB): $(POBJ_FILES)
-	@echo "Linking the object files to build the $(BIN_LIB) library"
+	@echo "Linking the object files ($^) to build '$@' library file"
 	$(SILENT) $(CC) -o $(BUILD_DIR)/$@ $^ $(CFLAGS) $(LDFLAGS) $(LIBS)
 
 $(BIN_TEST): $(TOBJ_FILES)
-	@echo "Building the test binary out of the object files"
+	@echo "Building the test binary ($@) out of $^"
+	@echo "LD_LIBRARY_PATH = $(LD_LIBRARY_PATH)"
 	$(SILENT) $(CC) -o $(BUILD_DIR)/$@ $^ $(TST_LIBS) $(COV_LIBS) $(SHARED_LIB)
 
 test: $(BIN_LIB) $(BIN_TEST)
@@ -72,7 +79,7 @@ test: $(BIN_LIB) $(BIN_TEST)
 	@echo ""
 	@echo "---- TESTS END --------------------------------------"
 
-$(CVG_FILE): directories test
+$(CVG_FILE): test
 	@echo "Building coverage file $(BUILD_DIR)/$(CVG_FILE)"
 	$(SILENT) $(GCOV) $(GCONV_FLAGS) -o $(BUILD_DIR)/$(CVG_FILE)
 

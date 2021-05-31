@@ -23,9 +23,9 @@ struct _CB_NODE
 typedef struct _CB_NODE CB_NODE;
 
 // Node operations
-CB_RETURN cb_node_initialize(void **new_node);
-void cb_node_destroy(void *node);
-void cb_print_node(void *node);
+CB_RETURN cb_node_initialize(CB_NODE **node);
+void cb_node_destroy(CB_NODE **node);
+void cb_print_node(CB_NODE *node);
 CB_RETURN cb_node_add_data(CB_NODE *node, char *value);
 void *cb_node_get_data(CB_NODE *node, void *(*cb_get_data)(CB_NODE *node));
 

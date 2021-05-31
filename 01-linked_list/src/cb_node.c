@@ -8,7 +8,7 @@
 #include <string.h>
 #include "cb_node.h"
 
-CB_RETURN cb_node_initialize(void **newNode)
+CB_RETURN cb_node_initialize(CB_NODE **node)
 {
     CB_NODE *tmp;
     tmp = (CB_NODE *) malloc(sizeof(CB_NODE));
@@ -19,22 +19,49 @@ CB_RETURN cb_node_initialize(void **newNode)
     tmp->next = NULL;
     tmp->prev = NULL;
 
-    *newNode = tmp;
+    *node = tmp;
 
     return CB_OK;
 }
 
-void cb_node_destroy(void *node)
+void cb_node_destroy(CB_NODE **node)
 {
-    if(node == (CB_NODE *)NULL)
+    CB_NODE *tmp;
+
+    if(node == (CB_NODE **)NULL ||
+        *node == (CB_NODE *)NULL)
         return;
 
-    ((CB_NODE *)node)->next = NULL;
-    ((CB_NODE *)node)->prev = NULL;
-    if(((CB_NODE *)node)->value != (char *)NULL)
-        free(((CB_NODE *)node)->value);
-    free(node);
-    node = NULL;
+    tmp = *node;
+    tmp->next = NULL;
+    tmp->prev = NULL;
+    if(tmp->value != (char *)NULL)
+        free(tmp->value);
+
+    free(tmp);
+    tmp = NULL;
+    *node = tmp;
+}
+
+void cb_print_node(CB_NODE *node)
+{
+    if(node != (CB_NODE *)NULL)
+        printf("Node [%d]: %s\n", ((CB_NODE *)node)->id, (char *)((CB_NODE *)node)->value);
+}
+
+CB_RETURN cb_node_add_data(CB_NODE *node, char *value)
+{
+    node->value = (char *)malloc(strlen(value));
+    if(node->value == NULL)
+        return CB_ERR_MEM_INIT;
+
+    strcpy(node->value, value);
+    return CB_OK;
+}
+
+void *cb_node_get_data(CB_NODE *node, void *(*cb_get_data)(CB_NODE *node))
+{
+    return cb_get_data(node);
 }
 
 void cb_switch_node(void (*cb_switch_algo)(void **root, void *prev, void *nd1, void *nd2),
@@ -74,21 +101,4 @@ void cb_switch_node_next(void **root, void *prev, void *nd1, void *nd2)
 
     ((CB_NODE *)nd2)->next = nd1;
     ((CB_NODE *)nd1)->next = tmp;
-}
-
-
-void cb_print_node(void *node)
-{
-    if(node != (CB_NODE *)NULL)
-        printf("Node [%d]: %s\n", ((CB_NODE *)node)->id, (char *)((CB_NODE *)node)->value);
-}
-
-CB_RETURN cb_node_add_value(CB_NODE *node, char *value)
-{
-    node->value = (char *)malloc(strlen(value));
-    if(node->value == NULL)
-        return CB_ERR_MEM_INIT;
-
-    strcpy(node->value, value);
-    return CB_OK;
 }
