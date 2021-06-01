@@ -44,9 +44,31 @@ void cb_list_destroy(CB_LIST **list)
     *list = tmp;
 }
 
-CB_RETURN cb_list_ins_next(CB_LIST *list, CB_NODE *element, const void *data, CB_RETURN (*cb_node_initialize)(CB_NODE **nde, void *dta))
+CB_RETURN cb_list_ins_next(CB_LIST *list, CB_NODE *element, const void *data, CB_RETURN (*cb_node_initialize_callback)(CB_NODE **nde, const void *dta))
 {
-    return CB_ERR_GENERIC;
+    CB_RETURN ret = CB_OK;
+    CB_NODE *node;
+    if(list == (CB_LIST *)NULL)
+        return CB_ERR_NULL;
+
+    // Create and  populate the NODE
+    node = element;
+
+    // Check if the callback function is NULL and if NULL uses the default callback
+    if(cb_node_initialize_callback == NULL)
+        cb_node_initialize_callback = cb_node_initialize_data;
+
+    // Initialize the node populating with the given DATA
+    cb_node_initialize_callback(&node, data);
+    node->next = list->head;
+
+    // Update the list
+    list->size++;
+    list->head = node;
+    if(list->size == 1)
+        list->tail = node;
+
+    return ret;
 }
 /*
 CB_RETURN cb_list_del_next(CB_LIST *list, CB_NODE *element, void **data)

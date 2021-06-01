@@ -21,7 +21,7 @@ struct _CB_LIST
 
 CB_RETURN cb_list_init(CB_LIST **list, void (*cb_list_destructor_callback)(CB_LIST **list));
 void cb_list_destroy(CB_LIST **list);
-CB_RETURN cb_list_ins_next(CB_LIST *list, CB_NODE *element, const void *data, CB_RETURN (*cb_node_initialize_callback)(CB_NODE **nde, void *dta));
+CB_RETURN cb_list_ins_next(CB_LIST *list, CB_NODE *element, const void *data, CB_RETURN (*cb_node_initialize_callback)(CB_NODE **nde, const void *dta));
 
 CB_RETURN cb_list_del_next(CB_LIST *list, CB_NODE *element, void **data);
 CB_RETURN cb_list_get_size(const CB_LIST *list);

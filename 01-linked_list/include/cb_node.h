@@ -24,7 +24,7 @@ typedef struct _CB_NODE CB_NODE;
 
 // Node operations
 CB_RETURN cb_node_initialize(CB_NODE **node);
-CB_RETURN cb_node_initialize_data(CB_NODE **node, void *data);
+CB_RETURN cb_node_initialize_data(CB_NODE **node, const void *data);
 void cb_node_destroy(CB_NODE **node);
 
 // Node data manipulation

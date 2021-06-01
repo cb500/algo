@@ -4,10 +4,7 @@
  * Date: 2021-05-30
  **/
 
-#include <check.h>
-#include <stdlib.h>
 #include "Test-linked_list.h"
-#include "cb_node.h"
 
 START_TEST(test_cb_node_lifetime)
 {

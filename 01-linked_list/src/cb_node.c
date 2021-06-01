@@ -43,7 +43,7 @@ void cb_node_destroy(CB_NODE **node)
     *node = tmp;
 }
 
-CB_RETURN cb_node_initialize_data(CB_NODE **node, void *data)
+CB_RETURN cb_node_initialize_data(CB_NODE **node, const void *data)
 {
     CB_RETURN ret;
     ret = cb_node_initialize(node);
