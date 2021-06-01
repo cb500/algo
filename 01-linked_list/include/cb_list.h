@@ -1,5 +1,5 @@
 /**
- * node.h
+ * Header and interface of the List implementation
  * Author: Charly Batista
  * Date: 2021-05-28
  **/

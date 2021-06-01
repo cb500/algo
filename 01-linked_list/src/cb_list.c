@@ -1,5 +1,5 @@
 /**
- * Node implementation
+ * List implementation
  * Author: Charly Batista
  * Date: 2021-05-31
  **/
