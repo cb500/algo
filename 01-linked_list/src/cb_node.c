@@ -16,6 +16,7 @@ CB_RETURN cb_node_initialize(CB_NODE **node)
         return CB_ERR_MEM_INIT;
 
     memset(tmp, 0, sizeof(CB_NODE));
+    tmp->data = NULL;
     tmp->next = NULL;
     tmp->prev = NULL;
 

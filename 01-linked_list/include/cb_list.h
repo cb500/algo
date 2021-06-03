@@ -59,16 +59,16 @@ void cb_list_destroy(CB_LIST **list);
 CB_RETURN cb_list_ins_next(CB_LIST *list, CB_NODE *element, const void *data, CB_RETURN (*cb_node_initialize_callback)(CB_NODE **nde, const void *dta));
 
 /**
- * Removes the element just after element from the linked list specified by list.
- * If element is NULL, the element at the head of the list is removed.
- * Upon return, data points to the data stored in the element that was removed.
- * It is the responsibility of the caller to manage the storage associated with the data.
+ * Removes the NODE element just after element from the linked list specified by "criteria".
+ * If "criteria" element is NULL, the element at the head of the list is removed.
+ * Upon return, REMOVED points to the NODE that was just removed.
+ * It is the responsibility of the caller to manage the storage associated with the removed NODE.
  * @param  list the list to operate on
- * @param  element The element to evaluate and find the next
- * @param  data a pointer to the data stored in the element that was removed
+ * @param  criteria The NODE element to evaluate and find the next NODE to remove
+ * @param  removed The NODE that was removed from the list
  * @return CB_OK if successful, or the appropriated CB_ERROR otherwise
 */
-CB_RETURN cb_list_del_next(CB_LIST *list, CB_NODE *element, void **data);
+CB_RETURN cb_list_del_next(CB_LIST *list, CB_NODE *criteria, CB_NODE **removed);
 
 /**
  * Gets the number of elements in the linked list specified by list.

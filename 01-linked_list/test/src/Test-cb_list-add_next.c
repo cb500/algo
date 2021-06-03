@@ -9,14 +9,14 @@
 extern CB_LIST *tlist;
 extern CB_RETURN tret;
 
-void setup(void)
+void cb_list_add_next_setup(void)
 {
     // Initialize LIST object
     cb_list_init(&tlist, &cb_list_destroy);
     tret = cb_list_ins_next(tlist, NULL, TEST_NODE_DATA, &cb_node_initialize_data);
 }
 
-void teardown(void)
+void cb_list_add_next_teardown(void)
 {
     // Destroys the list object
     tlist->cb_list_destructor(&tlist);
@@ -101,7 +101,7 @@ Suite *cb_list_add_next_suite(void)
     s = suite_create("cb_list_add_next");
     tc_core = tcase_create("TC_List_add_next");
 
-    tcase_add_checked_fixture(tc_core, setup, teardown);
+    tcase_add_checked_fixture(tc_core, cb_list_add_next_setup, cb_list_add_next_teardown);
 
     tcase_add_test(tc_core, test_cb_list_ins_next_nulllist);
     tcase_add_test(tc_core, test_cb_list_ins_next_nullnode_init);

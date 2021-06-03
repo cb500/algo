@@ -71,9 +71,42 @@ CB_RETURN cb_list_ins_next(CB_LIST *list, CB_NODE *element, const void *data, CB
     return ret;
 }
 
-CB_RETURN cb_list_del_next(CB_LIST *list, CB_NODE *element, void **data)
+CB_RETURN cb_list_del_next(CB_LIST *list, CB_NODE *criteria, CB_NODE **removed)
 {
-    return CB_ERR_GENERIC;
+    CB_NODE *node;
+    CB_NODE *tmp;
+    if(list == (CB_LIST *)NULL)
+        return CB_ERR_NULL;
+
+    if(removed == NULL)
+        return CB_ERR_NULL;
+
+    node = NULL;
+    if(criteria != list->tail)
+    {
+        if(criteria == NULL)
+        {
+            node = list->head;
+            list->head = node->next;
+        }
+        else
+        {
+            tmp = list->head;
+            while(tmp != NULL)
+            {
+                if(tmp == criteria)
+                {
+                    node = tmp->next;
+                    tmp->next = node->next;
+                    break;
+                }
+                tmp = tmp->next;
+            }
+        }
+    }
+
+    *removed = node;
+    return CB_OK;
 }
 
 /*
