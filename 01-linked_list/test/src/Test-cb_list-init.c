@@ -65,6 +65,5 @@ Suite *cb_list_init_suite(void)
     tcase_add_test(tc_core, test_cb_list_empty_destroy);
     tcase_add_test(tc_core, test_cb_list_empty_destroy_callback);
     suite_add_tcase(s, tc_core);
-
     return s;
 }

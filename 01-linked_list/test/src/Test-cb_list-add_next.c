@@ -1,5 +1,5 @@
 /**
- * CB_LIST: Tests of the adding next functions
+ * CB_LIST: Tests of the "add next item to the list" (cb_list_ins_next) function
  * Author: Charly Batista
  * Date: 2021-05-31
  **/
@@ -21,6 +21,15 @@ void teardown(void)
     // Destroys the list object
     tlist->cb_list_destructor(&tlist);
 }
+
+START_TEST(test_cb_list_ins_next_nulllist)
+{
+    cb_list_ins_next(NULL, NULL, TEST_NODE_DATA, &cb_node_initialize_data);
+
+    // Check if the function returns OK
+    ck_assert_int_eq(tret, CB_OK);
+} END_TEST
+
 
 START_TEST(test_cb_list_ins_next_nullnode_init)
 {
@@ -89,11 +98,12 @@ Suite *cb_list_add_next_suite(void)
     Suite *s;
     TCase *tc_core;
 
-    s = suite_create("cb_list");
-    tc_core = tcase_create("TC_List");
+    s = suite_create("cb_list_add_next");
+    tc_core = tcase_create("TC_List_add_next");
 
     tcase_add_checked_fixture(tc_core, setup, teardown);
 
+    tcase_add_test(tc_core, test_cb_list_ins_next_nulllist);
     tcase_add_test(tc_core, test_cb_list_ins_next_nullnode_init);
     tcase_add_test(tc_core, test_cb_list_ins_next_nullnode_head);
     tcase_add_test(tc_core, test_cb_list_ins_next_nullnode_tail);
@@ -101,22 +111,6 @@ Suite *cb_list_add_next_suite(void)
     tcase_add_test(tc_core, test_cb_list_ins_next_nullnode_head_data);
     tcase_add_test(tc_core, test_cb_list_ins_next_nullnode_tail_data);
     tcase_add_test(tc_core, test_cb_list_ins_next_nullcallback);
-/*
-    tcase_add_test(tc_core, );
-    tcase_add_test(tc_core, );
-    tcase_add_test(tc_core, );
-    tcase_add_test(tc_core, );
-    tcase_add_test(tc_core, );
-    tcase_add_test(tc_core, );
-    tcase_add_test(tc_core, );
-    tcase_add_test(tc_core, );
-    tcase_add_test(tc_core, );
-    tcase_add_test(tc_core, );
-    tcase_add_test(tc_core, );
-    tcase_add_test(tc_core, );
-*/
-
     suite_add_tcase(s, tc_core);
-
     return s;
 }

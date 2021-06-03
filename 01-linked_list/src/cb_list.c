@@ -70,12 +70,13 @@ CB_RETURN cb_list_ins_next(CB_LIST *list, CB_NODE *element, const void *data, CB
 
     return ret;
 }
-/*
+
 CB_RETURN cb_list_del_next(CB_LIST *list, CB_NODE *element, void **data)
 {
     return CB_ERR_GENERIC;
 }
 
+/*
 CB_RETURN cb_list_get_size(const CB_LIST *list)
 {
     return CB_ERR_GENERIC;
@@ -104,5 +105,10 @@ CB_RETURN cb_list_is_head(const CB_NODE *element)
 CB_RETURN cb_list_is_tail(const CB_NODE *element)
 {
     return CB_ERR_GENERIC;
+}
+
+void cb_list_traverse(CB_LIST *list)
+{
+
 }
 */

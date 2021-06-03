@@ -17,5 +17,6 @@
 Suite *cb_node_suite(void);
 Suite *cb_list_init_suite(void);
 Suite *cb_list_add_next_suite(void);
+Suite *cb_list_del_next_suite(void);
 
 #endif  //__CB_TEST_LINKED_LIST_H
