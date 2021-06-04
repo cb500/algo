@@ -14,9 +14,7 @@
 struct _CB_NODE
 {
     u_int32_t id;   // It is the original position in the list when the node was created
-    u_int32_t pos;  // Current position in the list
     void *data;    // Can carry any value, determined by the user
-    struct _CB_NODE *prev;  // Previous node in the list
     struct _CB_NODE *next;  // Next node in the list
 };
 

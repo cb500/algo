@@ -18,8 +18,6 @@ CB_RETURN cb_node_initialize(CB_NODE **node)
     memset(tmp, 0, sizeof(CB_NODE));
     tmp->data = NULL;
     tmp->next = NULL;
-    tmp->prev = NULL;
-
     *node = tmp;
 
     return CB_OK;
@@ -35,7 +33,6 @@ void cb_node_destroy(CB_NODE **node)
 
     tmp = *node;
     tmp->next = NULL;
-    tmp->prev = NULL;
     if(tmp->data != (char *)NULL)
         free(tmp->data);
 
@@ -103,21 +100,6 @@ void cb_switch_node(void (*cb_switch_algo)(void **root, void *prev, void *nd1, v
     void *nd2)
 {
     cb_switch_algo(root, prev, nd1, nd2);
-}
-
-void cb_switch_node_prev(void **root, void *prev, void *nd1, void *nd2)
-{
-    CB_NODE *tmp = ((CB_NODE *)nd2)->prev;
-
-    // Check if the previous value is NULL.
-    // It will happen if this is the 1st node to be moved
-    if(prev != (CB_NODE *)NULL)
-        ((CB_NODE *)prev)->prev = nd2;
-    else
-        *root = nd2;
-
-    ((CB_NODE *)nd2)->prev = nd1;
-    ((CB_NODE *)nd1)->prev = tmp;
 }
 
 void cb_switch_node_next(void **root, void *prev, void *nd1, void *nd2)
