@@ -5,6 +5,7 @@
  **/
 
 #include <stdlib.h>
+#include <string.h>
 #include "cb_node.h"
 #include "cb_list.h"
 
@@ -109,6 +110,52 @@ CB_RETURN cb_list_del_next(CB_LIST *list, CB_NODE *criteria, CB_NODE **removed)
     return CB_OK;
 }
 
+CB_NODE *cb_list_find(const CB_LIST *list, const void *params, CB_NODE *(*cb_list_find_callback)(const CB_LIST *lst, const void *prams))
+{
+    return cb_list_find_callback(list, params);
+}
+
+CB_NODE *cb_list_find_by_data(const CB_LIST *list, const void *params)
+{
+    CB_NODE *node;
+    CB_NODE *tmp;
+
+    tmp = list->head;
+    node = NULL;
+    while (tmp != (CB_NODE *)NULL)
+    {
+        if(!strcmp(tmp->data, params))
+        {
+            node = tmp;
+            break;
+        }
+        tmp = tmp->next;
+    }
+
+    return node;
+}
+
+CB_NODE *cb_list_find_by_pos(const CB_LIST *list, const ssize_t pos)
+{
+    CB_NODE *node;
+    CB_NODE *tmp;
+    ssize_t counter;
+
+    tmp = list->head;
+    counter = 0;
+    node = NULL;
+    while (tmp != (CB_NODE *)NULL)
+    {
+        if(pos == counter++)
+        {
+            node = tmp;
+            break;
+        }
+        tmp = tmp->next;
+    }
+
+    return node;
+}
 /*
 CB_RETURN cb_list_get_size(const CB_LIST *list)
 {

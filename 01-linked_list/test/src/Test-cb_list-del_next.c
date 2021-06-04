@@ -83,7 +83,6 @@ START_TEST(test_cb_list_del_next_nullnode_data)
 START_TEST(test_cb_list_del_next_nullnode)
 {
     cb_list_del_next(tlist, NULL, &tnode);
-    printf("\nOld Head: %s\nNew Head: %s\n\n", (char *)tnode->data, (char *)tlist->head->data);
     ck_assert_ptr_ne(tnode, tlist->head);
 } END_TEST
 
@@ -153,9 +152,6 @@ START_TEST(test_cb_list_del_next_nextnode)
 
 START_TEST(test_cb_list_del_next_tail)
 {
-    //CB_NODE *node_next;
-    //node_next = tlist->head->next;
-
     cb_list_del_next(tlist, tlist->tail, &tnode);
     ck_assert_ptr_null(tnode);
 } END_TEST

@@ -71,6 +71,34 @@ CB_RETURN cb_list_ins_next(CB_LIST *list, CB_NODE *element, const void *data, CB
 CB_RETURN cb_list_del_next(CB_LIST *list, CB_NODE *criteria, CB_NODE **removed);
 
 /**
+ * Find and return a NODE element using a callback function
+ * @param  list
+ * @param  params
+ * @param cb_list_find_callback
+ * @return CB_NODE if the element is found in the list
+ *         NULL if not found
+ */
+CB_NODE *cb_list_find(const CB_LIST *list, const void *params, CB_NODE *(*cb_list_find_callback)(const CB_LIST *lst, const void *prams));
+
+/**
+ * Search for a NODE using the DATA. It will return the 1st found element or NULL in case of not found element
+ * @param  list
+ * @param  params
+ * @return CB_NODE if the element is found in the list
+ *         NULL if not found
+ */
+CB_NODE *cb_list_find_by_data(const CB_LIST *list, const void *params);
+
+/**
+ * Return the NODE at the specified position
+ * @param  list
+ * @param  params
+ * @return CB_NODE if the element is found in the list
+ *         NULL if not found
+ */
+CB_NODE *cb_list_find_by_pos(const CB_LIST *list, const ssize_t pos);
+
+/**
  * Gets the number of elements in the linked list specified by list.
  * @param  list
  * @return Number of elements in the list
@@ -123,7 +151,7 @@ CB_BOOL cb_list_is_head(const CB_LIST *list, const CB_NODE *element);
 CB_RETURN cb_list_is_tail(const CB_NODE *element);
 
 /**
- * Traverse and print the list
+ * Traverse the list printing all the node's data
  * @param
  * @return
  */

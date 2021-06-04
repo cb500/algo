@@ -21,6 +21,7 @@ int main(void)
     srunner_add_suite(runner, cb_list_init_suite());
     srunner_add_suite(runner, cb_list_add_next_suite());
     srunner_add_suite(runner, cb_list_del_next_suite());
+    srunner_add_suite(runner, cb_list_find_suite());
 
     srunner_run_all(runner, CK_NORMAL);
     no_failed = srunner_ntests_failed(runner);
