@@ -10,6 +10,9 @@
 
 CB_LIST *tlist = NULL;
 CB_RETURN tret = 0;
+CB_NODE *tnode;
+char *tdata;
+
 
 int main(void)
 {

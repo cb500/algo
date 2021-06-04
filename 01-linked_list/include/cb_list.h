@@ -102,8 +102,9 @@ CB_NODE *cb_list_find_by_pos(const CB_LIST *list, const ssize_t pos);
  * Gets the number of elements in the linked list specified by list.
  * @param  list
  * @return Number of elements in the list
+ *         CB_ERR_NULL if the list is NULL
  */
-ssize_t cb_list_get_size(const CB_LIST *list);
+size_t cb_list_get_size(const CB_LIST *list);
 
 /**
  * Gets the head of the linked list specified by list.
@@ -148,13 +149,13 @@ CB_BOOL cb_list_is_head(const CB_LIST *list, const CB_NODE *element);
  * @return CB_TRUE if the element is at the tail of the list
  *         CB_FALSE otherwise.
  */
-CB_RETURN cb_list_is_tail(const CB_NODE *element);
+CB_BOOL cb_list_is_tail(const CB_LIST *list, const CB_NODE *element);
 
 /**
  * Traverse the list printing all the node's data
  * @param
  * @return
  */
-void cb_list_traverse(CB_LIST *list);
+CB_RETURN cb_list_traverse(const CB_LIST *list);
 
 #endif  // __CB_LIST_H

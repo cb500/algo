@@ -156,39 +156,94 @@ CB_NODE *cb_list_find_by_pos(const CB_LIST *list, const ssize_t pos)
 
     return node;
 }
-/*
-CB_RETURN cb_list_get_size(const CB_LIST *list)
+
+size_t cb_list_get_size(const CB_LIST *list)
 {
-    return CB_ERR_GENERIC;
+    if(list == (CB_LIST *)NULL)
+        return CB_ERR_NULL;
+
+    return list->size;
 }
 
 CB_NODE *cb_list_get_head(const CB_LIST *list)
 {
-    return NULL;
+    if(list == (CB_LIST *)NULL)
+        return NULL;
+
+    return list->head;
 }
 
 CB_NODE *cb_list_get_tail(const CB_LIST *list)
 {
+    if(list == (CB_LIST *)NULL)
+        return NULL;
+
+    return list->tail;
+}
+
+CB_NODE *cb_list_get_next(const CB_LIST *list, const CB_NODE *element)
+{
+    CB_NODE *tmp;
+    if(list == (CB_LIST *)NULL)
+        return NULL;
+
+    if(element == (CB_NODE *)NULL)
+        return NULL;
+
+    tmp = list->head;
+    while(tmp != (CB_NODE *)NULL)
+    {
+        if(tmp == element || strcmp(tmp->data, element->data) == 0)
+            return tmp->next;
+
+        tmp = tmp->next;
+    }
+
     return NULL;
 }
 
-CB_NODE *cb_list_get_next(const CB_NODE *element)
+CB_BOOL cb_list_is_head(const CB_LIST *list, const CB_NODE *element)
 {
-    return NULL;
+    if(list == (CB_LIST *)NULL)
+        return CB_FALSE;
+
+    if(element == (CB_NODE *)NULL)
+        return CB_FALSE;
+
+    if(element == list->head)
+        return CB_TRUE;
+
+    return CB_FALSE;
 }
 
-CB_RETURN cb_list_is_head(const CB_NODE *element)
+CB_BOOL cb_list_is_tail(const CB_LIST *list, const CB_NODE *element)
 {
-    return CB_ERR_GENERIC;
+    if(list == (CB_LIST *)NULL)
+        return CB_FALSE;
+
+    if(element == (CB_NODE *)NULL)
+        return CB_FALSE;
+
+    if(element == list->tail)
+        return CB_TRUE;
+
+    return CB_FALSE;
 }
 
-CB_RETURN cb_list_is_tail(const CB_NODE *element)
+CB_RETURN cb_list_traverse(const CB_LIST *list)
 {
-    return CB_ERR_GENERIC;
-}
+    CB_NODE *tmp;
+    ssize_t pos;
+    if(list == (CB_LIST *)NULL)
+        return CB_ERR_NULL;
 
-void cb_list_traverse(CB_LIST *list)
-{
+    tmp = list->head;
+    printf("List size: %ld\n", cb_list_get_size(list));
+    while(tmp != (CB_NODE *)NULL)
+    {
+        printf("Element[%5ld]: %s\n", pos++, (char *)cb_node_get_data(tmp));
+        tmp = tmp->next;
+    }
 
+    return CB_OK;
 }
-*/

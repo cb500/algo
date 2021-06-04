@@ -8,14 +8,9 @@
 
 extern CB_LIST *tlist;
 extern CB_RETURN tret;
+extern CB_NODE *tnode;
+extern char *tdata;
 
-#ifndef tnode
-CB_NODE *tnode;
-#endif
-
-#ifndef tdata
-char *tdata;
-#endif
 
 void test_cb_list_del_next_setup(void)
 {

@@ -56,7 +56,7 @@ int main()
 {
     setup();
     tnode = cb_list_find_by_pos(tlist, 4);
-    printf("\n\nNode data: %s\n\n", tnode->data);
+    cb_list_traverse(tlist);
 
     return 0;
 }
