@@ -1,37 +1,34 @@
 # -*- Makefile -*-
+# Project makefile
+# Author: Charly Batista
+# Date: 2021-06-04
 
-# Binaries
-CC    = gcc
-MKDIR = mkdir -p
+include ../config.mk
 
-# Folders and paths
-INCDIR    = ./include
-SRC    	  = src
-BUILD_DIR = objs
+build: directories $(BIN)
+	$(EC) "Done, enjoy your binary files :D"
 
-# CC flags and libs
-CFLAGS = -g -Wall -I$(INCDIR)
-LIBS   =
-
-# Binary name
-BIN  = stack
-
-# Source files and object files
-SRCS = 
-OBJS = $(addprefix $(BUILD_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
-
-.PHONY: all clean
-
-all: directories $(BIN)
+all: build lib run coverage
 
 directories:
-	${MKDIR} ${BUILD_DIR}
+	$(EC) "Creating directories $(BUILD_DIR)"
+	$(SILENT) $(MKDIR) $(BUILD_DIR)
 
-$(BUILD_DIR)/%.o: $(SRC)/%.c
-	$(CC) -c -o $@ $< $(CFLAGS)
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+	$(EC) "PROJ_INC_DIR: $(PROJ_INC_DIR)"
+	$(EC) "Compiling project file '$<' to create '$@'"
+	$(SILENT) $(CC) -c -o $@ $< $(CFLAGS) $(DEP_INC)
 
-$(BIN): $(OBJS)
-	$(CC) -o $(BUILD_DIR)/$@ $^ $(CFLAGS) $(LIBS)
+$(BIN): $(POBJ_FILES)
+	$(EC) "POBJ_FILES: $(POBJ_FILES)"
+	$(EC) "Linking the object files ($^) to build '$@' executable file"
+	$(SILENT) $(CC) -o $(BUILD_DIR)/$@ $^ $(CFLAGS) $(LIBS) $(DEP_LIB) -llinked_list
+
+coverage: $(CVG_FILE)
+
+$(CVG_FILE): test
+	$(EC) "Building coverage file $(BUILD_DIR)/$(CVG_FILE)"
+	$(SILENT) $(GCOV) $(GCONV_FLAGS) -o $(BUILD_DIR)/$(CVG_FILE)
 
 clean:
-	rm -Rf $(BUILD_DIR)
+	$(SILENT) rm -Rf $(BUILD_DIR)

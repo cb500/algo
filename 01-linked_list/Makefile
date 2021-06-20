@@ -18,6 +18,7 @@ INC_PRJ_DIR = ../include
 INC_TST_DIR = ./test/include
 TST_DIR	  	= test/src
 BUILD_DIR 	= build
+PRJ_LIB_DIR = ../libs
 #LD_LIBRARY_PATH :=`pwd`/$(BUILD_DIR):$(LD_LIBRARY_PATH)
 
 # CC flags and libs
@@ -53,26 +54,31 @@ directories:
 	$(SILENT) $(MKDIR) $(BUILD_DIR)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	@echo "Compiling project file '$<' to create '$@'"
+	@echo "Compiling project file '$<' to create '$(BUILD_DIR)/$@'"
 	$(SILENT) $(CC) -c -o $@ $< $(CFLAGS)
 
 $(BUILD_DIR)/%.o: $(TST_DIR)/%.c
-	@echo "Compiling test file '$<' to create '$@'"
+	@echo "Compiling test file '$<' to create '$(BUILD_DIR)/$@'"
 	$(SILENT) $(CC) -c -o $@ $< $(CFLAGS) $(PROFILE_FLAGS)
 
 $(BIN): $(POBJ_FILES)
-	@echo "Linking the object files ($^) to build '$@' executable file"
+	@echo "Linking the object files ($^) to build '$(BUILD_DIR)/$@' executable file"
 	$(SILENT) $(CC) -o $(BUILD_DIR)/$@ $^ $(CFLAGS) $(LIBS)
 
-lib: directories $(BIN_LIB)
-
 $(BIN_LIB): $(LOBJ_FILES)
-	@echo "Linking the object files ($^) to build '$@' library file"
+	@echo "Linking the object files ($^) to build '$(BUILD_DIR)/$@' library file"
 	$(SILENT) $(CC) -o $(BUILD_DIR)/$@ $^ $(CFLAGS) $(LDFLAGS) $(LIBS)
 
 $(BIN_TEST): $(LOBJ_FILES) $(TOBJ_FILES)
-	@echo "Building the test binary ($@) out of $^"
+	@echo "Building the test binary ($(BUILD_DIR)/$@) out of $^"
 	$(SILENT) $(CC) -o $(BUILD_DIR)/$@ $^ $(TST_LIBS) $(COV_LIBS)
+
+lib: directories $(BIN_LIB)
+
+lib_install: lib
+	@echo "Copying the '$(BUILD_DIR)/$(BIN_LIB)' file to the $(PRJ_LIB_DIR)"
+	$(SILENT) cp $(BUILD_DIR)/$(BIN_LIB) $(PRJ_LIB_DIR)
+
 
 test: directories $(BIN_TEST)
 	@echo ""

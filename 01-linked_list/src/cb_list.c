@@ -239,9 +239,10 @@ CB_RETURN cb_list_traverse(const CB_LIST *list)
 
     tmp = list->head;
     printf("List size: %ld\n", cb_list_get_size(list));
+    pos = 0;
     while(tmp != (CB_NODE *)NULL)
     {
-        printf("Element[%5ld]: %s\n", pos++, (char *)cb_node_get_data(tmp));
+        printf("Element[%05ld]: %s\n", pos++, (char *)cb_node_get_data(tmp));
         tmp = tmp->next;
     }
 
